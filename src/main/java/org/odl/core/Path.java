@@ -1,12 +1,15 @@
 package org.odl.core;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Path {
-    private final LinkedList<String> hops = new LinkedList<String>();
+    private final List<String> hops = new ArrayList<String>();
+    private int currentHop = 0;
 
-    public void addHop(String hop) {
+    public Path addHop(String hop) {
         hops.add(hop);
+        return this;
     }
 
     public Path duplicate() {
@@ -20,11 +23,13 @@ public class Path {
     }
 
     public String nextHop() {
-        return hops.removeFirst();
+        String nextHop = hops.get(currentHop);
+        this.currentHop += 1;
+        return nextHop;
     }
 
     public boolean hasMoreHops() {
-        return hops.size() > 0;
+        return this.currentHop <= (hops.size() - 1);
     }
 
     public boolean isVia(String viaHop) {

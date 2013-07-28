@@ -11,5 +11,5 @@ public interface SouthBound extends DeviceIdentifier {
     void addFlow(String destination, Path path);
     Map<String, NetworkDevice> getAttachedDevices();
     String deviceId();
-    List<Path> findPaths(String destinationDeviceId, Path path);
+    Path findPath(String destinationDeviceId, Path path);
 }

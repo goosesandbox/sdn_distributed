@@ -12,9 +12,6 @@ public enum Strategy {
                 @Override
                 public Path select(List<Path> paths) {
                     Path path = paths.get(0);
-                    if (path.hasMoreHops()) {
-                        path.nextHop();
-                    }
                     return path;
                 }};}},
 
@@ -30,9 +27,6 @@ public enum Strategy {
                             found = path;
                             break;
                         }
-                    }
-                    if (found.hasMoreHops()) {
-                        found.nextHop();
                     }
                     return found;
                 }};}},

@@ -20,23 +20,23 @@ public class Test {
         EndUserNetworkDevice EUND_B = new EndUserNetworkDevice("EUND_B");
 
         // physical topology
-        ROUTER_A.attach(ROUTER_B);
-        ROUTER_B.attach(ROUTER_C);
-        ROUTER_B.attach(ROUTER_D);
-        ROUTER_C.attach(ROUTER_E);
-        ROUTER_C.attach(ROUTER_F);
-        ROUTER_C.attach(ROUTER_D);
-        ROUTER_D.attach(ROUTER_F);
-        ROUTER_E.attach(ROUTER_G);
-        ROUTER_F.attach(ROUTER_G);
-        ROUTER_E.attach(ROUTER_H);
-        ROUTER_G.attach(EUND_A);
-        ROUTER_H.attach(EUND_B);
+        ROUTER_A.connect(ROUTER_B);
+        ROUTER_B.connect(ROUTER_C);
+        ROUTER_B.connect(ROUTER_D);
+        ROUTER_C.connect(ROUTER_E);
+        ROUTER_C.connect(ROUTER_F);
+        ROUTER_C.connect(ROUTER_D);
+        ROUTER_D.connect(ROUTER_F);
+        ROUTER_E.connect(ROUTER_G);
+        ROUTER_F.connect(ROUTER_G);
+        ROUTER_E.connect(ROUTER_H);
+        ROUTER_G.connect(EUND_A);
+        ROUTER_H.connect(EUND_B);
 
         // add monitoring agency to topology
-        ROUTER_D.attach(ROUTER_NSA);
-        ROUTER_NSA.attach(ROUTER_F);
-        ROUTER_F.attach(ROUTER_E);
+        ROUTER_D.connect(ROUTER_NSA);
+        ROUTER_NSA.connect(ROUTER_F);
+        ROUTER_F.connect(ROUTER_E);
 
         System.out.println("set path selection logic to first available");
         ROUTER_A.post(Strategy.FIRST_AVAILABLE.logic());
