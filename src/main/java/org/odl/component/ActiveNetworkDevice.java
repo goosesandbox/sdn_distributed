@@ -59,6 +59,12 @@ public class ActiveNetworkDevice extends NetworkDevice implements SouthBound, Re
         return Collections.unmodifiableMap(attachedDevices);
     }
 
+    /*
+     * Best to be implemented in device fabric. There is no need to implement it in controller.
+     * What we need is programmable decision logic. We do not need path searching algorithm.
+     * Since each fabric is asking about next path, only directly connected devices,
+     * we can skip all TCP/UDP/IP stack and ask for path using more efficient protocols.
+     */
     @Override
     public Path findPath(String destinationDeviceId, Path path) {
         Path returnPath = null;
@@ -75,6 +81,11 @@ public class ActiveNetworkDevice extends NetworkDevice implements SouthBound, Re
             // Other paths are discarded in previous if statements.
             List<Path> paths = queryNextDevices(destinationDeviceId,
                                                 path.addHop(this.deviceId()));
+            // Reduce part of MapReduce.
+            // List of candidate paths is reduced based on algorithm in logic.
+            // Path is then send to calling fabric. Calling fabric collects path info
+            // from all connected devices and then again list of paths is reduced to one.
+            // Optimal path calculation is then distributed among network nodes.
             if (paths.size() > 0) {
                 returnPath = controller.decidePath(paths);
             }
@@ -115,17 +126,8 @@ public class ActiveNetworkDevice extends NetworkDevice implements SouthBound, Re
     public void post(PathSelector logic) {
         this.flowTable.clear();
         this.controller.setLogic(logic);
-        /* Simplified logic. Does not prevent loops.
-         * Instead of manually installing logic to devices, device receiving new logic must emit
-         * NEW_LOGIC_EVENT containing version number. Device receving event must check its logic version
-         * against emited version number.
-         *
-         * Since installing new logic is not an everyday task. Performance should not be an issue.
-         * All packet formwarding must act according to new logic.
-         *
-         * As an alternative to embeded logic scenario, logic can sit externally and controller
-         * consults logic by connecting to logic provider.
-         */
+        // Simplified logic.
+        // Does not prevent loops.
         for (NetworkDevice nd : attachedDevices.values()) {
             if (nd instanceof Rest) {
                 Rest server = (Rest)nd;

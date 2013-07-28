@@ -31,21 +31,16 @@ public enum Strategy {
                     return found;
                 }};}},
 
-    FASTEST_PATH {
+    CORBA_ZEROMQ_REST {
         @Override
         public PathSelector logic() {
-            // we need statistics from fabric to determine fastest path
-            // sum latencies and select
-            throw new UnsupportedOperationException();
-        }},
-
-    MAXIMUM_BANDWIDTH {
-        @Override
-        public PathSelector logic() {
-            // we need fabric data to select optimum path
-            // select path with largest of smallest
+            // We can connect to logic sitting somewhere in the Cloud.
+            // Using network connection we can used more advanced algorithms of path discovery
+            // This way we can bypass Reduce algorithm of path search and always use whole set
+            // of candidate paths.
             throw new UnsupportedOperationException();
         }};
+
 
     public abstract PathSelector logic();
 }
